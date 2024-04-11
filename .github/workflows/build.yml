@@ -3,6 +3,12 @@ name: Build and push Docker image
 on:
   push:
     branches: [ "main", "prebuild-container" ]
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      # Excluded because it looks like it is not used in Dockerfile
+      - "*.bat"
+      - "*.sh"
   pull_request:
     branches: [ "main" ]
 
