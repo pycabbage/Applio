@@ -2,7 +2,7 @@ name: Build and push Docker image
 
 on:
   push:
-    branches: ["main"]
+    # branches: ["main"] # restrict main branch (will uncomment after testing)
     paths-ignore:
       - "README.md"
       - "LICENSE"
@@ -65,6 +65,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
 
       - name: Sign the published Docker image
         if: ${{ github.event_name != 'pull_request' }}
