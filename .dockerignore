@@ -1,0 +1,8 @@
+.github/
+Dockerfile
+docker-compose.yaml
+README.md
+
+# Excluded because it looks like it is not used in Dockerfile
+*.bat
+*.sh
