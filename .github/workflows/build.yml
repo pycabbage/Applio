@@ -2,7 +2,7 @@ name: Build and push Docker image
 
 on:
   push:
-    branches: [ "main", "prebuild-container" ]
+    branches: ["main"]
     paths-ignore:
       - "README.md"
       - "LICENSE"
@@ -10,7 +10,9 @@ on:
       - "*.bat"
       - "*.sh"
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+  release:
+    types: [published]
 
 env:
   REGISTRY: ghcr.io
@@ -34,7 +36,7 @@ jobs:
       - uses: sigstore/cosign-installer@v3.5.0
         if: github.event_name != 'pull_request'
         with:
-          cosign-release: 'v2.2.4'
+          cosign-release: "v2.2.4"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
