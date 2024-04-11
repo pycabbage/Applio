@@ -2,6 +2,7 @@ version: '1'
 
 services:
   applio:
+    image: ghcr.io/IAHispano/applio:master
     build:
       context: ./
       dockerfile: Dockerfile
