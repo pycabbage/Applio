@@ -15,7 +15,7 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   apt update && \
-  apt-get install -y -qq ffmpeg aria2
+  apt-get install -y -qq --no-install-recommends ffmpeg aria2 ca-certificates
 
 # By caching the pip module file with Docker, the build time is reduced while suppressing the image file.
 RUN --mount=type=cache,mode=0755,target=/root/.cache/pip \
@@ -26,7 +26,7 @@ RUN --mount=type=cache,mode=0755,target=/root/.cache/pip \
 # Copying the files after installing dependencies prevents the cache from becoming invalidated when files other than requirements.txt change.
 COPY . .
 
-VOLUME [ "/app/logs/weights", "/app/opt" ]
+VOLUME [ "/app/logs", "/app/opt", "/app/rvc/pretraineds" ]
 
 ENTRYPOINT [ "python3" ]
 

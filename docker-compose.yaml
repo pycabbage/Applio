@@ -1,13 +1,11 @@
-version: '1'
-
 services:
   applio:
-    image: ghcr.io/IAHispano/applio:master
+    image: ghcr.io/pycabbage/applio:prebuild-container
     build:
-      context: ./
+      context: .
       dockerfile: Dockerfile
     ports:
-      - "6969"
+      - 16969:6969
     deploy:
       resources:
         reservations:
@@ -15,3 +13,12 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+    volumes:
+      - ./logs:/app/logs
+      - opt:/app/opt
+      - ./rvc/pretraineds:/app/rvc/pretraineds
+      - ./rvc/lib:/app/rvc/lib
+
+
+volumes:
+  opt:
