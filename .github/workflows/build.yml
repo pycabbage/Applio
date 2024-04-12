@@ -24,8 +24,8 @@ on:
         description: "Runs on"
         required: true
         type: string
-        default: "self-hosted"
-        # default: "ubuntu-latest"
+        # default: "self-hosted"
+        default: "ubuntu-latest"
 
 env:
   REGISTRY: ghcr.io
@@ -35,7 +35,7 @@ env:
 jobs:
   build:
     name: Build and push Docker image
-    runs-on: ${{ github.event.inputs.runs-on || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runs-on || 'ubuntu-latest' }}
     permissions:
       contents: read
       packages: write
@@ -89,7 +89,7 @@ jobs:
       - name: Build and push Docker image (ignore cache)
         uses: docker/build-push-action@v5
         id: build-and-push-nocache
-        if: ${{ failure() || github.event.inputs.nocache }}
+        if: ${{ steps.build-and-push.outcome == 'failue' || github.event.inputs.nocache }}
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
