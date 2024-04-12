@@ -17,7 +17,7 @@ on:
     inputs:
       nocache:
         description: "Do not use cache"
-        required: false
+        required: true
         type: boolean
         default: false
       runs-on:
@@ -35,7 +35,7 @@ env:
 jobs:
   build:
     name: Build and push Docker image
-    runs-on: ${{ github.event.inputs.runs-on }}
+    runs-on: ${{ github.event.inputs.runs-on || 'Applio-runner' }}
     permissions:
       contents: read
       packages: write
