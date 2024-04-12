@@ -15,6 +15,7 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   apt update && \
+  apt-get install -y -qq apt-utils && \
   apt-get install -y -qq --no-install-recommends ffmpeg aria2 ca-certificates
 
 # By caching the pip module file with Docker, the build time is reduced while suppressing the image file.
