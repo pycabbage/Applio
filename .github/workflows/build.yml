@@ -44,7 +44,7 @@ jobs:
       id-token: write
 
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+      group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}-${{ matrix.platform }}
       cancel-in-progress: true
     
     strategy:
