@@ -1,0 +1,15 @@
+.venv/
+logs/
+.git/
+.github/
+Dockerfile
+compose.yaml
+.dockerignore
+.gitignore
+.env*
+*.md
+LICENSE
+Makefile
+*.sh
+*.bat
+*.ipynb

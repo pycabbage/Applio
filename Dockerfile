@@ -1,27 +1,36 @@
 # syntax=docker/dockerfile:1
-FROM python:3.10-bullseye
 
-# Expose the required port
-EXPOSE 6969
+FROM python:3.11-bullseye AS base
 
 # Set up working directory
 WORKDIR /app
 
+FROM base AS runner_base
+
 # Install system dependencies, clean up cache to keep image size small
-RUN apt update && \
-    apt install -y -qq ffmpeg && \
-    apt clean && rm -rf /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    mv /etc/apt/apt.conf.d/docker-clean /tmp/docker-clean && echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache && \
+    apt update && apt-get --no-install-recommends install -y ffmpeg && \
+    mv /tmp/docker-clean /etc/apt/apt.conf.d/docker-clean && rm /etc/apt/apt.conf.d/keep-cache
 
-# Copy application files into the container
+FROM base AS builder
+
+# Use uv to run the app with the specified port
+RUN \
+    --mount=type=cache,target=/root/.cache/uv,sharing=locked \
+    --mount=type=bind,from=ghcr.io/astral-sh/uv:0.7.9,source=/uv,target=/usr/local/bin/uv,readonly \
+    --mount=type=bind,source=pyproject.toml,target=/app/pyproject.toml,readonly \
+    --mount=type=bind,source=uv.lock,target=/app/uv.lock,readonly \
+    UV_LINK_MODE=copy uv sync --locked --no-install-project --no-editable
+
+FROM runner_base AS runner
+
+# Expose the required port
+EXPOSE 6969
+
 COPY . .
-
-# Create a virtual environment in the app directory and install dependencies
-RUN python3 -m venv /app/.venv && \
-    . /app/.venv/bin/activate && \
-    pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir python-ffmpeg && \
-    pip install --no-cache-dir torch==2.7.0 torchvision torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu128 && \
-    if [ -f "requirements.txt" ]; then pip install --no-cache-dir -r requirements.txt; fi
+COPY --from=builder /app/.venv /app/
 
 # Define volumes for persistent storage
 VOLUME ["/app/logs/"]

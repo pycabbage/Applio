@@ -1,0 +1,59 @@
+[project]
+name = "applio"
+version = "3.2.9"
+description = "A simple, high-quality voice conversion tool focused on ease of use and performance."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "antlr4-python3-runtime==4.8 ; sys_platform == 'darwin'",
+    "beautifulsoup4>=4.13.4",
+    "certifi>=2023.7.22 ; sys_platform == 'darwin'",
+    "edge-tts==6.1.9",
+    "einops>=0.8.1",
+    "faiss-cpu==1.7.3",
+    "ffmpeg-python>=0.2.0",
+    "gradio==5.23.1",
+    "librosa==0.9.2",
+    "matplotlib==3.7.2",
+    "noisereduce>=3.0.3",
+    "numba==0.61.0 ; sys_platform == 'darwin' or sys_platform == 'win32'",
+    "numba>=0.61.0 ; sys_platform == 'linux'",
+    "numpy==1.26.4",
+    "omegaconf>=2.0.6 ; sys_platform == 'darwin'",
+    "pedalboard>=0.9.17",
+    "pip>=23.3 ; sys_platform == 'darwin'",
+    "pypresence>=4.3.0",
+    "pyyaml>=6.0.2 ; sys_platform == 'darwin'",
+    "requests>=2.31.0,<2.32.0",
+    "scipy==1.11.1",
+    "soundfile==0.12.1",
+    "soxr>=0.5.0.post1",
+    "stftpitchshift>=2.0",
+    "tensorboard>=2.19.0",
+    "tensorboardx>=2.6.2.2",
+    "torch==2.7.0",
+    "torchaudio==2.7.0",
+    "torchcrepe==0.0.23",
+    "torchfcpe>=0.0.4",
+    "torchvision>=0.22.0",
+    "tqdm>=4.67.1",
+    "transformers==4.44.2",
+    "wget>=3.2",
+    "wheel>=0.45.1 ; sys_platform == 'darwin'",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+torchaudio = [
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+torchvision = [
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
