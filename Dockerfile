@@ -30,7 +30,7 @@ FROM runner_base AS runner
 EXPOSE 6969
 
 COPY . .
-COPY --from=builder /app/.venv /app/
+COPY --from=builder /app/.venv /app/.venv
 
 # Define volumes for persistent storage
 VOLUME ["/app/logs/"]

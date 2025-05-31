@@ -3,8 +3,11 @@ services:
     build:
       context: .
       target: runner
+    volumes:
+      - ./logs:/app/logs
+      - ./assets:/app/assets
     ports:
-      - 6969
+      - 6969:6969
     deploy:
       resources:
         reservations:
