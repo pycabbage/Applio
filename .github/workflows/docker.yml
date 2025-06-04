@@ -49,6 +49,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
+          outputs: |
+            type=registry,oci-mediatypes=true,compression=zstd,compression-level=22,force-compression=true
           target: runner
           cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -22,7 +22,12 @@ RUN \
     --mount=type=bind,from=ghcr.io/astral-sh/uv:0.7.9,source=/uv,target=/usr/local/bin/uv,readonly \
     --mount=type=bind,source=pyproject.toml,target=/app/pyproject.toml,readonly \
     --mount=type=bind,source=uv.lock,target=/app/uv.lock,readonly \
-    UV_LINK_MODE=copy uv sync --locked --no-install-project --no-editable
+    UV_LINK_MODE=copy uv sync --locked --no-install-project --no-editable && \
+    find .venv -type d -name '__pycache__' -exec rm -rf {} + && \
+    find .venv -type d -name 'tests' -exec rm -rf {} + || true && \
+    find .venv -type d -name 'test' -exec rm -rf {} + || true && \
+    find .venv -type d -name '*.dist-info' -exec rm -rf {} + || true && \
+    find .venv -type d -name '*.egg-info' -exec rm -rf {} + || true
 
 FROM runner_base AS runner
 
